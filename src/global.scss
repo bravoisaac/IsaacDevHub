@@ -32,6 +32,17 @@
  * https://ionicframework.com/docs/theming/dark-mode
  */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+@import "@ionic/angular/css/palettes/dark.always.css";
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #050506;
+}
+
+* {
+  box-sizing: border-box;
+}
