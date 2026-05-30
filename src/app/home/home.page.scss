@@ -14,6 +14,7 @@ a {
 .portfolio-shell {
   min-height: 100vh;
   background:
+    radial-gradient(circle at 78% 10%, rgba(255, 168, 74, 0.12), transparent 24rem),
     radial-gradient(circle at 18% 24%, rgba(225, 72, 34, 0.13), transparent 28rem),
     linear-gradient(180deg, #050506 0%, #0d0d0f 42%, #050506 100%);
 }
@@ -67,6 +68,25 @@ a {
   color: #ffffff;
 }
 
+.nav-links a.active {
+  color: #ffffff;
+}
+
+.nav-links a.active::after {
+  background: #ff7a3d;
+  border-radius: 999px;
+  content: '';
+  display: block;
+  height: 2px;
+  margin-top: 0.35rem;
+  width: 100%;
+}
+
+.screen {
+  min-height: 100vh;
+  padding-top: 8.5rem;
+}
+
 .hero {
   display: grid;
   min-height: 92vh;
@@ -85,13 +105,13 @@ a {
 .hero-image {
   height: 100%;
   object-fit: cover;
-  opacity: 0.72;
+  opacity: 0.58;
   width: 100%;
 }
 
 .hero-scrim {
   background:
-    linear-gradient(90deg, rgba(5, 5, 6, 0.96), rgba(5, 5, 6, 0.68) 43%, rgba(5, 5, 6, 0.36)),
+    linear-gradient(90deg, rgba(5, 5, 6, 0.98), rgba(5, 5, 6, 0.74) 48%, rgba(5, 5, 6, 0.46)),
     linear-gradient(180deg, rgba(5, 5, 6, 0.18), #050506 96%);
 }
 
@@ -119,12 +139,12 @@ p {
 
 h1 {
   color: #fff9f4;
-  font-size: clamp(3rem, 8vw, 6.9rem);
+  font-size: clamp(2.85rem, 7.4vw, 6.5rem);
   font-weight: 600;
   letter-spacing: 0;
-  line-height: 0.92;
+  line-height: 0.95;
   margin-bottom: 1.4rem;
-  max-width: 920px;
+  max-width: 1100px;
 }
 
 .hero-copy,
@@ -202,6 +222,10 @@ ion-button[fill='outline'] {
   max-width: 650px;
 }
 
+.premium-heading {
+  max-width: 980px;
+}
+
 .section-heading h2,
 .github-band h2 {
   color: #fff8f2;
@@ -210,6 +234,10 @@ ion-button[fill='outline'] {
   letter-spacing: 0;
   line-height: 1;
   margin-bottom: 1rem;
+}
+
+.compact-heading h2 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
 }
 
 .wide-heading {
@@ -234,6 +262,7 @@ ion-button[fill='outline'] {
   display: grid;
   gap: 1rem;
   grid-template-columns: 1.1fr 0.95fr 0.95fr;
+  margin-top: 2rem;
 }
 
 .profile-grid .section-heading {
@@ -243,16 +272,28 @@ ion-button[fill='outline'] {
 .panel,
 .project-card,
 .github-band,
+.tech-card,
+.timeline-panel,
+.timeline-item,
+.credential-panel,
+.case-card,
 .contact-card {
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
 }
 
 .panel,
 .project-card {
   min-height: 260px;
   padding: 1.4rem;
+}
+
+.feature-panel {
+  min-height: 320px;
 }
 
 .panel ion-icon {
@@ -277,7 +318,9 @@ ion-button[fill='outline'] {
 }
 
 .intro-panel {
-  background: linear-gradient(145deg, rgba(228, 72, 34, 0.16), rgba(255, 255, 255, 0.045));
+  background:
+    linear-gradient(145deg, rgba(228, 72, 34, 0.2), rgba(255, 184, 77, 0.08)),
+    rgba(255, 255, 255, 0.045);
 }
 
 .skill-list,
@@ -297,11 +340,155 @@ ion-button[fill='outline'] {
   padding: 0.5rem 0.7rem;
 }
 
+.tech-matrix,
+.case-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.tech-card,
+.case-card {
+  padding: 1.25rem;
+}
+
+.tech-card h3,
+.case-card h3,
+.timeline-item h3,
+.credential-panel h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 0.85rem;
+}
+
+.timeline-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  margin-top: 1rem;
+}
+
+.timeline-panel,
+.credential-panel {
+  padding: 1.4rem;
+}
+
+.timeline-item {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(180px, 0.5fr) minmax(0, 1fr);
+  margin-top: 1rem;
+  padding: 1.2rem;
+}
+
+.timeline-item span,
+.case-card span {
+  color: #ff7a3d;
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  margin-bottom: 0.7rem;
+  text-transform: uppercase;
+}
+
+.timeline-item p,
+.case-card p,
+.credential-panel li,
+.timeline-item li {
+  color: rgba(245, 241, 236, 0.72);
+  line-height: 1.7;
+}
+
+.timeline-item ul,
+.credential-panel ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.credential-panel h3:not(:first-child) {
+  margin-top: 1.6rem;
+}
+
+.case-grid {
+  margin-top: 2rem;
+}
+
+.case-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
+.case-card p {
+  margin-bottom: 1rem;
+}
+
+.case-card strong {
+  color: #fff8f1;
+  display: block;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin-top: auto;
+}
+
+.case-card a {
+  align-items: center;
+  color: #ff9a5f;
+  display: inline-flex;
+  font-weight: 800;
+  gap: 0.45rem;
+  margin-top: 1.2rem;
+}
+
 .projects-grid {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 2rem;
+}
+
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.project-filters button {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: rgba(255, 248, 241, 0.82);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  min-height: 2.4rem;
+  padding: 0.5rem 0.85rem;
+}
+
+.project-filters button.active,
+.project-filters button:hover {
+  background: #e44822;
+  border-color: #e44822;
+  color: #ffffff;
+}
+
+.state-message {
+  color: rgba(245, 241, 236, 0.72);
+  line-height: 1.7;
+  margin: 2rem 0 0;
+}
+
+.error-message {
+  color: #ff8a73;
+}
+
+.success-message {
+  color: #6ee7a8;
 }
 
 .project-card {
@@ -340,8 +527,12 @@ ion-button[fill='outline'] {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: minmax(0, 1fr) auto;
-  margin: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 5.5rem);
   padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.github-band.screen {
+  margin: 0;
+  padding: 8.5rem clamp(1.25rem, 5vw, 5.5rem) clamp(4rem, 8vw, 7rem);
 }
 
 .github-band p {
@@ -352,6 +543,65 @@ ion-button[fill='outline'] {
   display: grid;
   gap: 2rem;
   grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.7fr);
+}
+
+.contact-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.contact-form {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.contact-form label span {
+  color: rgba(255, 248, 241, 0.82);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #fff8f1;
+  font: inherit;
+  min-height: 2.9rem;
+  outline: none;
+  padding: 0.8rem 0.9rem;
+  width: 100%;
+}
+
+.contact-form textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #ff7a3d;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(245, 241, 236, 0.42);
+}
+
+.form-status {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .contact-cards {
@@ -375,14 +625,26 @@ ion-button[fill='outline'] {
 }
 
 @media (max-width: 980px) {
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
   .nav-links {
-    display: none;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
   }
 
   .profile-grid,
   .projects-grid,
   .contact-grid,
   .github-band,
+  .tech-matrix,
+  .timeline-grid,
+  .timeline-item,
+  .case-grid,
   .wide-heading {
     grid-template-columns: 1fr;
   }
@@ -394,13 +656,13 @@ ion-button[fill='outline'] {
 }
 
 @media (max-width: 620px) {
-  .brand span:last-child {
-    display: none;
-  }
-
   .hero {
     min-height: 94vh;
-    padding-top: 7rem;
+    padding-top: 9.5rem;
+  }
+
+  .screen {
+    padding-top: 9.5rem;
   }
 
   .hero-scrim {
