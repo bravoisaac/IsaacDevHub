@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -64,13 +65,22 @@ interface FeaturedCase {
   repository: string;
 }
 
+interface DiamondFace {
+  title: string;
+  subtitle: string;
+  route?: string;
+  href?: string;
+  icon: string;
+  className: string;
+}
+
 type PortfolioScreen = 'home' | 'profile' | 'projects' | 'github' | 'contact';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [FormsModule, RouterLink, IonButton, IonContent, IonIcon],
+  imports: [NgClass, FormsModule, RouterLink, IonButton, IonContent, IonIcon],
 })
 export class HomePage implements OnInit {
   private readonly githubUser = 'bravoisaac';
@@ -79,6 +89,13 @@ export class HomePage implements OnInit {
   private readonly emailPublicKey = 'nG1ofkK0Ahmk5oNh5';
 
   currentScreen: PortfolioScreen = 'home';
+  diamondRotateX = -10;
+  diamondRotateY = -18;
+  private isRotatingDiamond = false;
+  private diamondStartX = 0;
+  private diamondStartY = 0;
+  private diamondStartRotateX = 0;
+  private diamondStartRotateY = 0;
 
   readonly skills = [
     'Python',
@@ -177,6 +194,51 @@ export class HomePage implements OnInit {
     'Fundamentals of Analytics on AWS Part 1 & 2 - Amazon Web Services',
   ];
 
+  readonly diamondFaces: DiamondFace[] = [
+    {
+      title: 'Inicio',
+      subtitle: 'Resumen profesional',
+      route: '/home',
+      icon: 'code-slash-outline',
+      className: 'face-home',
+    },
+    {
+      title: 'Perfil',
+      subtitle: 'Stack y experiencia',
+      route: '/perfil',
+      icon: 'person-outline',
+      className: 'face-profile',
+    },
+    {
+      title: 'Proyectos',
+      subtitle: 'GitHub y casos reales',
+      route: '/proyectos',
+      icon: 'briefcase-outline',
+      className: 'face-projects',
+    },
+    {
+      title: 'GitHub',
+      subtitle: 'Codigo fuente',
+      route: '/github',
+      icon: 'logo-github',
+      className: 'face-github',
+    },
+    {
+      title: 'Contacto',
+      subtitle: 'Trabajemos juntos',
+      route: '/contacto',
+      icon: 'mail-outline',
+      className: 'face-contact',
+    },
+    {
+      title: 'CV',
+      subtitle: 'Descargar perfil',
+      href: 'assets/CV_Isaac_Bravo_FullStack.pdf',
+      icon: 'open-outline',
+      className: 'face-cv',
+    },
+  ];
+
   projects: Project[] = [];
   projectFilters = ['Todos'];
   selectedFilter = 'Todos';
@@ -227,6 +289,33 @@ export class HomePage implements OnInit {
 
   setProjectFilter(language: string): void {
     this.selectedFilter = language;
+  }
+
+  startDiamondRotation(event: PointerEvent): void {
+    this.isRotatingDiamond = true;
+    this.diamondStartX = event.clientX;
+    this.diamondStartY = event.clientY;
+    this.diamondStartRotateX = this.diamondRotateX;
+    this.diamondStartRotateY = this.diamondRotateY;
+  }
+
+  rotateDiamond(event: PointerEvent): void {
+    if (!this.isRotatingDiamond) {
+      return;
+    }
+
+    const deltaX = event.clientX - this.diamondStartX;
+    const deltaY = event.clientY - this.diamondStartY;
+
+    this.diamondRotateY = this.diamondStartRotateY + deltaX * 0.35;
+    this.diamondRotateX = Math.max(
+      -42,
+      Math.min(42, this.diamondStartRotateX - deltaY * 0.28),
+    );
+  }
+
+  stopDiamondRotation(): void {
+    this.isRotatingDiamond = false;
   }
 
   async sendContactMessage(): Promise<void> {

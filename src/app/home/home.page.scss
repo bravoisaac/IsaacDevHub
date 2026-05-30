@@ -121,6 +121,210 @@ a {
   z-index: 1;
 }
 
+.hero-layout {
+  align-items: center;
+  display: grid;
+  gap: clamp(2rem, 5vw, 5rem);
+  grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.75fr);
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.diamond-panel {
+  align-items: center;
+  display: grid;
+  justify-items: center;
+  min-height: 480px;
+  position: relative;
+}
+
+.diamond-panel p {
+  color: rgba(245, 241, 236, 0.58);
+  font-size: 0.9rem;
+  margin: 1.1rem 0 0;
+  text-align: center;
+}
+
+.diamond-stage {
+  --diamond-rotate-x: -10deg;
+  --diamond-rotate-y: -18deg;
+  cursor: grab;
+  height: min(74vw, 390px);
+  max-height: 390px;
+  max-width: 390px;
+  perspective: 1200px;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  width: min(74vw, 390px);
+}
+
+.diamond-stage:active {
+  cursor: grabbing;
+}
+
+.diamond-aura {
+  background:
+    radial-gradient(circle, rgba(255, 122, 61, 0.34), transparent 58%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 45%);
+  filter: blur(22px);
+  inset: 3%;
+  opacity: 0.95;
+  position: absolute;
+}
+
+.diamond-core {
+  height: 100%;
+  left: 50%;
+  position: relative;
+  top: 50%;
+  transform:
+    translate(-50%, -50%)
+    rotateX(var(--diamond-rotate-x))
+    rotateY(var(--diamond-rotate-y));
+  transform-style: preserve-3d;
+  transition: transform 140ms ease-out;
+  width: 100%;
+}
+
+.diamond-core::before,
+.diamond-core::after {
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.diamond-core::before {
+  background:
+    linear-gradient(90deg, transparent 49.7%, rgba(255, 255, 255, 0.22) 50%, transparent 50.3%),
+    linear-gradient(0deg, transparent 49.7%, rgba(255, 255, 255, 0.18) 50%, transparent 50.3%);
+  transform: translateZ(197px);
+  z-index: 5;
+}
+
+.diamond-core::after {
+  background:
+    radial-gradient(circle at 35% 20%, rgba(255, 255, 255, 0.32), transparent 28%),
+    linear-gradient(135deg, rgba(255, 122, 61, 0.18), transparent 58%);
+  opacity: 0.45;
+  transform: translateZ(202px);
+  z-index: 6;
+}
+
+.diamond-face {
+  align-items: center;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 122, 61, 0.1) 52%, rgba(5, 5, 6, 0.44)),
+    rgba(12, 12, 14, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow:
+    inset 0 1px 18px rgba(255, 255, 255, 0.18),
+    inset 0 -20px 40px rgba(0, 0, 0, 0.22),
+    0 24px 60px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(6px);
+  color: #fff8f1;
+  display: grid;
+  gap: 0.35rem;
+  height: 100%;
+  justify-items: center;
+  left: 0;
+  padding: 2.4rem;
+  place-content: center;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  transform-style: preserve-3d;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+  width: 100%;
+}
+
+.diamond-face:hover {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(255, 151, 83, 0.24), rgba(228, 72, 34, 0.18)),
+    rgba(18, 14, 12, 0.72);
+  border-color: rgba(255, 159, 93, 0.7);
+  box-shadow:
+    inset 0 1px 22px rgba(255, 255, 255, 0.2),
+    0 28px 80px rgba(228, 72, 34, 0.24);
+}
+
+.diamond-face ion-icon,
+.diamond-face strong,
+.diamond-face span {
+  position: relative;
+  z-index: 1;
+}
+
+.diamond-face ion-icon {
+  color: #ff9a5f;
+  font-size: 2rem;
+}
+
+.diamond-face strong {
+  font-size: 1.15rem;
+  line-height: 1.1;
+}
+
+.diamond-face span {
+  color: rgba(245, 241, 236, 0.64);
+  font-size: 0.74rem;
+  line-height: 1.25;
+}
+
+.face-home {
+  transform: translateZ(195px);
+}
+
+.face-profile {
+  transform: rotateY(-90deg) translateZ(195px);
+}
+
+.face-projects {
+  transform: rotateY(90deg) translateZ(195px);
+}
+
+.face-github {
+  transform: rotateX(90deg) translateZ(195px);
+}
+
+.face-contact {
+  transform: rotateX(-90deg) translateZ(195px);
+}
+
+.face-cv {
+  transform: rotateY(180deg) translateZ(195px);
+}
+
+.diamond-center {
+  align-items: center;
+  background:
+    radial-gradient(circle at 35% 20%, rgba(255, 255, 255, 0.3), transparent 32%),
+    linear-gradient(135deg, rgba(255, 122, 61, 0.94), rgba(173, 31, 31, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 20px 70px rgba(228, 72, 34, 0.38);
+  color: #fff;
+  display: grid;
+  height: 5rem;
+  left: calc(50% - 2.5rem);
+  place-items: center;
+  position: absolute;
+  top: calc(50% - 2.5rem);
+  transform: translateZ(205px);
+  width: 5rem;
+}
+
+.diamond-center span {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .eyebrow {
   color: #ff7a3d;
   font-size: 0.78rem;
@@ -638,6 +842,7 @@ ion-button[fill='outline'] {
   }
 
   .profile-grid,
+  .hero-layout,
   .projects-grid,
   .contact-grid,
   .github-band,
@@ -659,6 +864,31 @@ ion-button[fill='outline'] {
   .hero {
     min-height: 94vh;
     padding-top: 9.5rem;
+  }
+
+  .diamond-panel {
+    min-height: 340px;
+  }
+
+  .diamond-stage {
+    height: min(74vw, 280px);
+    width: min(74vw, 280px);
+  }
+
+  .diamond-face {
+    padding: 1.2rem;
+  }
+
+  .diamond-face ion-icon {
+    font-size: 1.35rem;
+  }
+
+  .diamond-face strong {
+    font-size: 0.82rem;
+  }
+
+  .diamond-face span {
+    display: none;
   }
 
   .screen {

@@ -20,36 +20,83 @@
           <img src="assets/hero-portfolio.png" alt="" class="hero-image" />
           <div class="hero-scrim"></div>
 
-          <div class="hero-content">
-            <p class="eyebrow">Isaac Daniel Bravo Melo</p>
-            <h1>Desarrollador Full Stack Junior orientado a backend, datos y automatizacion.</h1>
-            <p class="hero-copy">
-              Ingeniero en Informatica titulado en Duoc UC. Construyo soluciones
-              web con Python, JavaScript, Laravel, Angular y bases de datos MySQL,
-              con foco en procesos institucionales, automatizacion e IA aplicada.
-            </p>
+          <div class="hero-layout">
+            <div class="hero-content">
+              <p class="eyebrow">Isaac Daniel Bravo Melo</p>
+              <h1>Desarrollador Full Stack Junior orientado a backend, datos y automatizacion.</h1>
+              <p class="hero-copy">
+                Ingeniero en Informatica titulado en Duoc UC. Construyo soluciones
+                web con Python, JavaScript, Laravel, Angular y bases de datos MySQL,
+                con foco en procesos institucionales, automatizacion e IA aplicada.
+              </p>
 
-            <div class="hero-actions">
-              <ion-button routerLink="/proyectos" shape="round">
-                Ver proyectos
-                <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-              </ion-button>
-              <ion-button routerLink="/contacto" fill="outline" shape="round">
-                Contacto
-              </ion-button>
-              <ion-button href="assets/CV_Isaac_Bravo_FullStack.pdf" target="_blank" fill="clear" shape="round">
-                Descargar CV
-              </ion-button>
+              <div class="hero-actions">
+                <ion-button routerLink="/proyectos" shape="round">
+                  Ver proyectos
+                  <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+                </ion-button>
+                <ion-button routerLink="/contacto" fill="outline" shape="round">
+                  Contacto
+                </ion-button>
+                <ion-button href="assets/CV_Isaac_Bravo_FullStack.pdf" target="_blank" fill="clear" shape="round">
+                  Descargar CV
+                </ion-button>
+              </div>
+
+              <div class="stats" aria-label="Resumen profesional">
+                @for (stat of stats; track stat.label) {
+                  <div class="stat">
+                    <strong>{{ stat.value }}</strong>
+                    <span>{{ stat.label }}</span>
+                  </div>
+                }
+              </div>
             </div>
 
-            <div class="stats" aria-label="Resumen profesional">
-              @for (stat of stats; track stat.label) {
-                <div class="stat">
-                  <strong>{{ stat.value }}</strong>
-                  <span>{{ stat.label }}</span>
+            <section class="diamond-panel" aria-label="Navegacion interactiva del portafolio">
+              <div
+                class="diamond-stage"
+                [style.--diamond-rotate-x]="diamondRotateX + 'deg'"
+                [style.--diamond-rotate-y]="diamondRotateY + 'deg'"
+                (pointerdown)="startDiamondRotation($event)"
+                (pointermove)="rotateDiamond($event)"
+                (pointerup)="stopDiamondRotation()"
+                (pointerleave)="stopDiamondRotation()"
+              >
+                <div class="diamond-aura"></div>
+                <div class="diamond-core">
+                  @for (face of diamondFaces; track face.title) {
+                    @if (face.route) {
+                      <a
+                        class="diamond-face"
+                        [ngClass]="face.className"
+                        [routerLink]="face.route"
+                      >
+                        <ion-icon [name]="face.icon"></ion-icon>
+                        <strong>{{ face.title }}</strong>
+                        <span>{{ face.subtitle }}</span>
+                      </a>
+                    } @else {
+                      <a
+                        class="diamond-face"
+                        [ngClass]="face.className"
+                        [href]="face.href"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <ion-icon [name]="face.icon"></ion-icon>
+                        <strong>{{ face.title }}</strong>
+                        <span>{{ face.subtitle }}</span>
+                      </a>
+                    }
+                  }
+                  <div class="diamond-center">
+                    <span>Portafolio</span>
+                  </div>
                 </div>
-              }
-            </div>
+              </div>
+              <p>Arrastra el cubo 3D y entra a cada cara del portafolio.</p>
+            </section>
           </div>
         </section>
       }
