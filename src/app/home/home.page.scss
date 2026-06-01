@@ -364,7 +364,14 @@ a {
 }
 
 .face-stack .face-content {
+  backface-visibility: visible;
   transform: translateZ(26px) rotateY(180deg);
+}
+
+.face-stack .face-content::before,
+.face-stack .face-content ion-icon,
+.face-stack .face-content > span {
+  backface-visibility: visible;
 }
 
 .nav-triangle:hover,
