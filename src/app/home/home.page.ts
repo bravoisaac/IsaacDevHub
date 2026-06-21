@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -84,7 +84,19 @@ interface StackFocus {
   items: string[];
 }
 
-interface DiamondFace {
+interface HeroFeature {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface MethodStep {
+  code: string;
+  title: string;
+  description: string;
+}
+
+interface CubeFace {
   title: string;
   subtitle: string;
   route?: string;
@@ -108,24 +120,24 @@ type PortfolioScreen =
   styleUrls: ['home.page.scss'],
   imports: [NgClass, FormsModule, RouterLink, IonButton, IonContent, IonIcon],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnDestroy, OnInit {
   private readonly githubUser = 'bravoisaac';
   private readonly emailServiceId = 'service_idnb5ag';
   private readonly emailTemplateId = 'template_1rhkvq8';
   private readonly emailPublicKey = 'nG1ofkK0Ahmk5oNh5';
 
   currentScreen: PortfolioScreen = 'home';
-  diamondRotateX = -14;
-  diamondRotateY = -28;
-  private isRotatingDiamond = false;
-  private diamondStartX = 0;
-  private diamondStartY = 0;
-  private diamondStartRotateX = 0;
-  private diamondStartRotateY = 0;
-  private diamondTargetRotateX = -14;
-  private diamondTargetRotateY = -28;
-  private diamondAnimationFrame = 0;
-  private diamondDidDrag = false;
+  cubeRotateX = -18;
+  cubeRotateY = -34;
+  private isRotatingCube = false;
+  private cubeStartX = 0;
+  private cubeStartY = 0;
+  private cubeStartRotateX = 0;
+  private cubeStartRotateY = 0;
+  private cubeTargetRotateX = -18;
+  private cubeTargetRotateY = -34;
+  private cubeAnimationFrame = 0;
+  private cubeDidDrag = false;
 
   readonly skills = [
     'Python',
@@ -193,6 +205,52 @@ export class HomePage implements OnInit {
     },
   ];
 
+  readonly heroFeatures: HeroFeature[] = [
+    {
+      title: 'Backend verificable',
+      description: 'APIs, reglas de negocio y consultas MySQL pensadas para operar con trazabilidad.',
+      icon: 'server-outline',
+    },
+    {
+      title: 'Automatizacion aplicada',
+      description: 'Flujos internos que reducen tareas manuales y conectan sistemas administrativos.',
+      icon: 'analytics-outline',
+    },
+    {
+      title: 'Producto responsive',
+      description: 'Interfaces Angular/Ionic claras, navegables y listas para procesos reales.',
+      icon: 'layers-outline',
+    },
+    {
+      title: 'Mejora medible',
+      description: 'Trabajo orientado a tiempos de respuesta, continuidad operativa e impacto visible.',
+      icon: 'trophy-outline',
+    },
+  ];
+
+  readonly methodFlow: MethodStep[] = [
+    {
+      code: '01',
+      title: 'Diagnosticar',
+      description: 'Entender objetivo, usuarios, datos disponibles y restricciones tecnicas.',
+    },
+    {
+      code: '02',
+      title: 'Prototipar',
+      description: 'Construir rapido una solucion funcional para validar el flujo principal.',
+    },
+    {
+      code: '03',
+      title: 'Optimizar',
+      description: 'Mejorar consultas, integraciones, automatizaciones y experiencia de uso.',
+    },
+    {
+      code: '04',
+      title: 'Publicar',
+      description: 'Preparar despliegue, documentacion, soporte y seguimiento operativo.',
+    },
+  ];
+
   readonly experience: ExperienceItem[] = [
     {
       role: 'Desarrollador / Soporte TI',
@@ -254,7 +312,7 @@ export class HomePage implements OnInit {
     { value: '20k+', label: 'registros trabajados en MySQL' },
   ];
 
-  readonly diamondFaces: DiamondFace[] = [
+  readonly cubeFaces: CubeFace[] = [
     {
       title: 'Inicio',
       subtitle: 'Resumen profesional',
@@ -368,6 +426,13 @@ export class HomePage implements OnInit {
     void this.loadGithubProjects();
   }
 
+  ngOnDestroy(): void {
+    if (this.cubeAnimationFrame) {
+      cancelAnimationFrame(this.cubeAnimationFrame);
+      this.cubeAnimationFrame = 0;
+    }
+  }
+
   get filteredProjects(): Project[] {
     if (this.selectedFilter === 'Todos') {
       return this.projects;
@@ -380,44 +445,44 @@ export class HomePage implements OnInit {
     this.selectedFilter = language;
   }
 
-  startDiamondRotation(event: PointerEvent): void {
+  startCubeRotation(event: PointerEvent): void {
     const stage = event.currentTarget as HTMLElement;
     const startedOnFace =
-      event.target instanceof Element && Boolean(event.target.closest('.nav-triangle'));
+      event.target instanceof Element && Boolean(event.target.closest('.nav-facet'));
 
     if (!startedOnFace) {
       stage.setPointerCapture(event.pointerId);
     }
 
-    this.isRotatingDiamond = true;
-    this.diamondDidDrag = false;
-    this.diamondStartX = event.clientX;
-    this.diamondStartY = event.clientY;
-    this.diamondStartRotateX = this.diamondTargetRotateX;
-    this.diamondStartRotateY = this.diamondTargetRotateY;
-    this.animateDiamondRotation();
+    this.isRotatingCube = true;
+    this.cubeDidDrag = false;
+    this.cubeStartX = event.clientX;
+    this.cubeStartY = event.clientY;
+    this.cubeStartRotateX = this.cubeTargetRotateX;
+    this.cubeStartRotateY = this.cubeTargetRotateY;
+    this.animateCubeRotation();
   }
 
-  rotateDiamond(event: PointerEvent): void {
-    if (!this.isRotatingDiamond) {
+  rotateCube(event: PointerEvent): void {
+    if (!this.isRotatingCube) {
       return;
     }
 
-    const deltaX = event.clientX - this.diamondStartX;
-    const deltaY = event.clientY - this.diamondStartY;
+    const deltaX = event.clientX - this.cubeStartX;
+    const deltaY = event.clientY - this.cubeStartY;
 
     if (Math.hypot(deltaX, deltaY) > 7) {
-      this.diamondDidDrag = true;
+      this.cubeDidDrag = true;
     }
 
-    this.diamondTargetRotateY = this.diamondStartRotateY + deltaX * 0.22;
-    this.diamondTargetRotateX = Math.max(
+    this.cubeTargetRotateY = this.cubeStartRotateY + deltaX * 0.22;
+    this.cubeTargetRotateX = Math.max(
       -42,
-      Math.min(42, this.diamondStartRotateX - deltaY * 0.18),
+      Math.min(42, this.cubeStartRotateX - deltaY * 0.18),
     );
   }
 
-  stopDiamondRotation(event?: PointerEvent): void {
+  stopCubeRotation(event?: PointerEvent): void {
     if (event?.currentTarget) {
       const target = event.currentTarget as HTMLElement;
       if (target.hasPointerCapture(event.pointerId)) {
@@ -425,15 +490,15 @@ export class HomePage implements OnInit {
       }
     }
 
-    this.isRotatingDiamond = false;
+    this.isRotatingCube = false;
   }
 
-  handleDiamondFaceClick(event: MouseEvent, face: DiamondFace): void {
+  handleCubeFaceClick(event: MouseEvent, face: CubeFace): void {
     event.preventDefault();
 
-    if (this.diamondDidDrag) {
+    if (this.cubeDidDrag) {
       event.stopPropagation();
-      this.diamondDidDrag = false;
+      this.cubeDidDrag = false;
       return;
     }
 
@@ -447,28 +512,28 @@ export class HomePage implements OnInit {
     }
   }
 
-  private animateDiamondRotation(): void {
-    if (this.diamondAnimationFrame) {
+  private animateCubeRotation(): void {
+    if (this.cubeAnimationFrame) {
       return;
     }
 
     const step = () => {
-      const easing = this.isRotatingDiamond ? 0.18 : 0.1;
+      const easing = this.isRotatingCube ? 0.18 : 0.1;
 
-      this.diamondRotateX += (this.diamondTargetRotateX - this.diamondRotateX) * easing;
-      this.diamondRotateY += (this.diamondTargetRotateY - this.diamondRotateY) * easing;
+      this.cubeRotateX += (this.cubeTargetRotateX - this.cubeRotateX) * easing;
+      this.cubeRotateY += (this.cubeTargetRotateY - this.cubeRotateY) * easing;
 
-      const deltaX = Math.abs(this.diamondTargetRotateX - this.diamondRotateX);
-      const deltaY = Math.abs(this.diamondTargetRotateY - this.diamondRotateY);
+      const deltaX = Math.abs(this.cubeTargetRotateX - this.cubeRotateX);
+      const deltaY = Math.abs(this.cubeTargetRotateY - this.cubeRotateY);
 
-      if (this.isRotatingDiamond || deltaX > 0.02 || deltaY > 0.02) {
-        this.diamondAnimationFrame = requestAnimationFrame(step);
+      if (this.isRotatingCube || deltaX > 0.02 || deltaY > 0.02) {
+        this.cubeAnimationFrame = requestAnimationFrame(step);
       } else {
-        this.diamondAnimationFrame = 0;
+        this.cubeAnimationFrame = 0;
       }
     };
 
-    this.diamondAnimationFrame = requestAnimationFrame(step);
+    this.cubeAnimationFrame = requestAnimationFrame(step);
   }
 
   async sendContactMessage(): Promise<void> {

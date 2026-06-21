@@ -1,41 +1,63 @@
-<ion-content [fullscreen]="true">
+<ion-content>
   <main class="portfolio-shell">
-    <nav class="topbar" aria-label="Navegacion principal">
+    <nav class="topbar" aria-label="Identidad del portafolio">
       <a class="brand" routerLink="/home">
-        <span class="brand-mark">P</span>
         <span>Isaac Bravo</span>
+        <small>Full Stack / Backend / Datos</small>
       </a>
 
-      <div class="nav-links">
-        <a routerLink="/home" [class.active]="currentScreen === 'home'">
-          <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
-          <span>Inicio</span>
-        </a>
-        <a routerLink="/perfil" [class.active]="currentScreen === 'profile'">
-          <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
-          <span>Perfil</span>
-        </a>
-        <a routerLink="/stack" [class.active]="currentScreen === 'stack'">
-          <ion-icon name="layers-outline" aria-hidden="true"></ion-icon>
-          <span>Stack</span>
-        </a>
-        <a routerLink="/experiencia" [class.active]="currentScreen === 'experience'">
-          <ion-icon name="ribbon-outline" aria-hidden="true"></ion-icon>
-          <span>Experiencia</span>
-        </a>
-        <a routerLink="/proyectos" [class.active]="currentScreen === 'projects'">
-          <ion-icon name="briefcase-outline" aria-hidden="true"></ion-icon>
-          <span>Proyectos</span>
-        </a>
-        <a routerLink="/github" [class.active]="currentScreen === 'github'">
-          <ion-icon name="logo-github" aria-hidden="true"></ion-icon>
-          <span>GitHub</span>
-        </a>
-        <a routerLink="/contacto" [class.active]="currentScreen === 'contact'">
-          <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
-          <span>Contacto</span>
-        </a>
+      <div class="quick-actions" aria-label="Accesos rapidos">
+        <a href="assets/CV_Isaac_Bravo_FullStack.pdf" target="_blank" rel="noreferrer">CV</a>
+        <a href="https://github.com/bravoisaac" target="_blank" rel="noreferrer">GH</a>
       </div>
+    </nav>
+
+    <nav class="cube-section-nav" aria-label="Navegacion principal">
+      <ul>
+        <li>
+          <a routerLink="/home" [class.is-active]="currentScreen === 'home'">
+            <span></span>
+            Inicio
+          </a>
+        </li>
+        <li>
+          <a routerLink="/perfil" [class.is-active]="currentScreen === 'profile'">
+            <span></span>
+            Perfil
+          </a>
+        </li>
+        <li>
+          <a routerLink="/stack" [class.is-active]="currentScreen === 'stack'">
+            <span></span>
+            Stack
+          </a>
+        </li>
+        <li>
+          <a routerLink="/experiencia" [class.is-active]="currentScreen === 'experience'">
+            <span></span>
+            Experiencia
+          </a>
+        </li>
+        <li>
+          <a routerLink="/proyectos" [class.is-active]="currentScreen === 'projects'">
+            <span></span>
+            Proyectos
+          </a>
+        </li>
+        <li>
+          <a routerLink="/github" [class.is-active]="currentScreen === 'github'">
+            <span></span>
+            GitHub
+          </a>
+        </li>
+        <li>
+          <a routerLink="/contacto" [class.is-active]="currentScreen === 'contact'">
+            <span></span>
+            Contacto
+          </a>
+        </li>
+      </ul>
+      <span class="cube-section-nav__name">Isaac Bravo</span>
     </nav>
 
     @switch (currentScreen) {
@@ -44,30 +66,34 @@
           <img src="assets/hero-portfolio.png" alt="" class="hero-image" />
           <div class="hero-scrim"></div>
 
-          <div class="hero-layout">
-            <div class="hero-content">
-              <p class="eyebrow">Isaac Daniel Bravo Melo</p>
-              <h1>Desarrollador Full Stack orientado a backend, datos y automatizacion.</h1>
+          <div class="hero-layout side-panels">
+            <section class="side-panels__rail side-panels__rail--left">
+              <p class="eyebrow">Ingenieria Full Stack</p>
+              <h1>
+                Backend,
+                <span>datos y automatizacion.</span>
+              </h1>
               <p class="hero-copy">
-                Ingeniero en Informatica titulado en Duoc UC. Construyo soluciones
-                web con Python, JavaScript, Laravel, Angular y bases de datos MySQL,
-                con foco en procesos institucionales, automatizacion e IA aplicada.
+                Ingeniero en Informatica titulado en Duoc UC. Construyo soluciones web
+                con Python, JavaScript, Laravel, Angular y MySQL, enfocadas en procesos
+                institucionales, trazabilidad, automatizacion e IA aplicada.
               </p>
 
-              <div class="hero-actions">
-                <ion-button routerLink="/proyectos" shape="round">
-                  Ver proyectos
-                  <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-                </ion-button>
-                <ion-button routerLink="/contacto" fill="outline" shape="round">
-                  Contacto
-                </ion-button>
-                <ion-button href="assets/CV_Isaac_Bravo_FullStack.pdf" target="_blank" fill="clear" shape="round">
-                  Descargar CV
-                </ion-button>
+              <div class="side-panels__features">
+                @for (feature of heroFeatures; track feature.title) {
+                  <article class="side-panels__feature">
+                    <span class="side-panels__feature-icon">
+                      <ion-icon [name]="feature.icon" aria-hidden="true"></ion-icon>
+                    </span>
+                    <div>
+                      <strong>{{ feature.title }}</strong>
+                      <p>{{ feature.description }}</p>
+                    </div>
+                  </article>
+                }
               </div>
 
-              <div class="stats" aria-label="Resumen profesional">
+              <div class="stats" aria-label="Senales profesionales">
                 @for (stat of stats; track stat.label) {
                   <div class="stat">
                     <strong>{{ stat.value }}</strong>
@@ -75,59 +101,104 @@
                   </div>
                 }
               </div>
-            </div>
 
-            <section class="diamond-panel" aria-label="Navegacion interactiva del portafolio">
-              <div
-                class="diamond-stage"
-                [style.--diamond-rotate-x]="diamondRotateX + 'deg'"
-                [style.--diamond-rotate-y]="diamondRotateY + 'deg'"
-                (pointerdown)="startDiamondRotation($event)"
-                (pointermove)="rotateDiamond($event)"
-                (pointerup)="stopDiamondRotation()"
-                (pointercancel)="stopDiamondRotation($event)"
-                (pointerleave)="stopDiamondRotation()"
-                (lostpointercapture)="stopDiamondRotation()"
-              >
-                <div class="diamond-aura"></div>
-                <div class="diamond-core">
-                  @for (face of diamondFaces; track face.title) {
-                    @if (face.route) {
-                      <a
-                        class="triangle nav-triangle"
-                        [ngClass]="face.className"
-                        [href]="face.route"
-                        [attr.aria-label]="face.title"
-                        [attr.data-label]="face.title"
-                        (click)="handleDiamondFaceClick($event, face)"
-                      >
-                        <span class="face-content">
-                          <ion-icon [name]="face.icon" aria-hidden="true"></ion-icon>
-                          <span>{{ face.title }}</span>
-                        </span>
-                      </a>
-                    } @else {
-                      <a
-                        class="triangle nav-triangle"
-                        [ngClass]="face.className"
-                        [href]="face.href"
-                        target="_blank"
-                        rel="noreferrer"
-                        [attr.aria-label]="face.title"
-                        [attr.data-label]="face.title"
-                        (click)="handleDiamondFaceClick($event, face)"
-                      >
-                        <span class="face-content">
-                          <ion-icon [name]="face.icon" aria-hidden="true"></ion-icon>
-                          <span>{{ face.title }}</span>
-                        </span>
-                      </a>
-                    }
-                  }
-                </div>
-                <div class="diamond-base"></div>
+              <div class="side-panels__actions">
+                <a class="side-panels__cta side-panels__cta--primary" routerLink="/proyectos">
+                  Explorar proyectos
+                  <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                </a>
+                <a class="side-panels__cta side-panels__cta--secondary" routerLink="/contacto">
+                  Contacto
+                  <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+                </a>
               </div>
             </section>
+
+            <section class="cube-artifact" aria-label="Artefacto interactivo del portafolio">
+              <div class="artifact-frame">
+                <div class="artifact-frame__screen">
+                  <span class="artifact-frame__status">Portafolio interactivo</span>
+
+                  <section class="cube-panel" aria-label="Cubo interactivo de navegacion del portafolio">
+                    <div
+                      class="cube-stage"
+                      [style.--cube-rotate-x]="cubeRotateX + 'deg'"
+                      [style.--cube-rotate-y]="cubeRotateY + 'deg'"
+                      (pointerdown)="startCubeRotation($event)"
+                      (pointermove)="rotateCube($event)"
+                      (pointerup)="stopCubeRotation()"
+                      (pointercancel)="stopCubeRotation($event)"
+                      (pointerleave)="stopCubeRotation()"
+                      (lostpointercapture)="stopCubeRotation()"
+                    >
+                      <div class="cube-aura"></div>
+                      <div class="cube-core">
+                        @for (face of cubeFaces; track face.title) {
+                          @if (face.route) {
+                            <a
+                              class="cube-facet nav-facet"
+                              [ngClass]="face.className"
+                              [href]="face.route"
+                              [attr.aria-label]="face.title"
+                              [attr.data-label]="face.title"
+                              (click)="handleCubeFaceClick($event, face)"
+                            >
+                              <span class="face-content">
+                                <ion-icon [name]="face.icon" aria-hidden="true"></ion-icon>
+                                <span>{{ face.title }}</span>
+                              </span>
+                            </a>
+                          } @else {
+                            <a
+                              class="cube-facet nav-facet"
+                              [ngClass]="face.className"
+                              [href]="face.href"
+                              target="_blank"
+                              rel="noreferrer"
+                              [attr.aria-label]="face.title"
+                              [attr.data-label]="face.title"
+                              (click)="handleCubeFaceClick($event, face)"
+                            >
+                              <span class="face-content">
+                                <ion-icon [name]="face.icon" aria-hidden="true"></ion-icon>
+                                <span>{{ face.title }}</span>
+                              </span>
+                            </a>
+                          }
+                        }
+                      </div>
+                      <div class="cube-base"></div>
+                    </div>
+                  </section>
+
+                  <p class="artifact-caption">Arrastra el cubo para explorar cada seccion.</p>
+                </div>
+              </div>
+            </section>
+
+            <aside class="side-panels__rail side-panels__rail--right">
+              <header class="side-panels__rail-header">
+                <span>Flujo profesional</span>
+                <strong>04</strong>
+              </header>
+
+              <div class="side-panels__flow">
+                @for (step of methodFlow; track step.title) {
+                  <article class="side-panels__flow-step">
+                    <span class="side-panels__flow-index">{{ step.code }}</span>
+                    <div class="side-panels__flow-body">
+                      <strong>{{ step.title }}</strong>
+                      <p>{{ step.description }}</p>
+                    </div>
+                  </article>
+                }
+              </div>
+
+              <a class="side-panels__cta side-panels__cta--secondary" routerLink="/perfil">
+                Ver perfil
+                <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+              </a>
+            </aside>
           </div>
         </section>
       }
