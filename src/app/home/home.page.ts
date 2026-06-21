@@ -1,5 +1,4 @@
-import { NgClass } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -12,24 +11,22 @@ import {
   analyticsOutline,
   briefcaseOutline,
   callOutline,
-  chatbubbleEllipsesOutline,
   codeSlashOutline,
-  compassOutline,
-  cubeOutline,
-  documentTextOutline,
-  folderOpenOutline,
-  homeOutline,
   layersOutline,
   logoGithub,
   mailOutline,
   openOutline,
-  personCircleOutline,
   personOutline,
   ribbonOutline,
   serverOutline,
   trophyOutline,
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import {
+  ObsidianCubeRenderer,
+  PORTFOLIO_OBSIDIAN_FACES,
+} from './obsidian-cube.renderer';
+import type { ObsidianCubeFace } from './obsidian-cube.renderer';
 
 interface Project {
   id: number;
@@ -96,15 +93,6 @@ interface MethodStep {
   description: string;
 }
 
-interface CubeFace {
-  title: string;
-  subtitle: string;
-  route?: string;
-  href?: string;
-  icon: string;
-  className: string;
-}
-
 type PortfolioScreen =
   | 'home'
   | 'profile'
@@ -118,26 +106,19 @@ type PortfolioScreen =
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [NgClass, FormsModule, RouterLink, IonButton, IonContent, IonIcon],
+  imports: [FormsModule, RouterLink, IonButton, IonContent, IonIcon],
 })
-export class HomePage implements OnDestroy, OnInit {
+export class HomePage implements AfterViewInit, OnDestroy, OnInit {
   private readonly githubUser = 'bravoisaac';
   private readonly emailServiceId = 'service_idnb5ag';
   private readonly emailTemplateId = 'template_1rhkvq8';
   private readonly emailPublicKey = 'nG1ofkK0Ahmk5oNh5';
+  private obsidianCube?: ObsidianCubeRenderer;
+
+  @ViewChild('obsidianCubeCanvas')
+  private obsidianCubeCanvas?: ElementRef<HTMLCanvasElement>;
 
   currentScreen: PortfolioScreen = 'home';
-  cubeRotateX = -18;
-  cubeRotateY = -34;
-  private isRotatingCube = false;
-  private cubeStartX = 0;
-  private cubeStartY = 0;
-  private cubeStartRotateX = 0;
-  private cubeStartRotateY = 0;
-  private cubeTargetRotateX = -18;
-  private cubeTargetRotateY = -34;
-  private cubeAnimationFrame = 0;
-  private cubeDidDrag = false;
 
   readonly skills = [
     'Python',
@@ -312,65 +293,6 @@ export class HomePage implements OnDestroy, OnInit {
     { value: '20k+', label: 'registros trabajados en MySQL' },
   ];
 
-  readonly cubeFaces: CubeFace[] = [
-    {
-      title: 'Inicio',
-      subtitle: 'Resumen profesional',
-      route: '/home',
-      icon: 'compass-outline',
-      className: 'face-home',
-    },
-    {
-      title: 'Perfil',
-      subtitle: 'Stack y experiencia',
-      route: '/perfil',
-      icon: 'person-circle-outline',
-      className: 'face-profile',
-    },
-    {
-      title: 'Stack',
-      subtitle: 'Tecnologias',
-      route: '/stack',
-      icon: 'cube-outline',
-      className: 'face-stack',
-    },
-    {
-      title: 'Experiencia',
-      subtitle: 'Trayectoria',
-      route: '/experiencia',
-      icon: 'trophy-outline',
-      className: 'face-experience',
-    },
-    {
-      title: 'Proyectos',
-      subtitle: 'GitHub y casos reales',
-      route: '/proyectos',
-      icon: 'folder-open-outline',
-      className: 'face-projects',
-    },
-    {
-      title: 'GitHub',
-      subtitle: 'Codigo fuente',
-      route: '/github',
-      icon: 'logo-github',
-      className: 'face-github',
-    },
-    {
-      title: 'Contacto',
-      subtitle: 'Trabajemos juntos',
-      route: '/contacto',
-      icon: 'chatbubble-ellipses-outline',
-      className: 'face-contact',
-    },
-    {
-      title: 'CV',
-      subtitle: 'Descargar perfil',
-      href: 'assets/CV_Isaac_Bravo_FullStack.pdf',
-      icon: 'document-text-outline',
-      className: 'face-cv',
-    },
-  ];
-
   projects: Project[] = [];
   projectFilters = ['Todos'];
   selectedFilter = 'Todos';
@@ -393,24 +315,18 @@ export class HomePage implements OnDestroy, OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly ngZone: NgZone,
   ) {
     addIcons({
       arrowForwardOutline,
       analyticsOutline,
       briefcaseOutline,
       callOutline,
-      chatbubbleEllipsesOutline,
       codeSlashOutline,
-      compassOutline,
-      cubeOutline,
-      documentTextOutline,
-      folderOpenOutline,
-      homeOutline,
       layersOutline,
       logoGithub,
       mailOutline,
       openOutline,
-      personCircleOutline,
       personOutline,
       ribbonOutline,
       serverOutline,
@@ -421,16 +337,29 @@ export class HomePage implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       this.currentScreen = (data['screen'] as PortfolioScreen) || 'home';
+
+      if (this.currentScreen !== 'home') {
+        this.destroyObsidianCube();
+      }
     });
 
     void this.loadGithubProjects();
   }
 
+  ngAfterViewInit(): void {
+    this.initializeObsidianCube();
+  }
+
+  ionViewDidEnter(): void {
+    this.initializeObsidianCube();
+  }
+
+  ionViewDidLeave(): void {
+    this.destroyObsidianCube();
+  }
+
   ngOnDestroy(): void {
-    if (this.cubeAnimationFrame) {
-      cancelAnimationFrame(this.cubeAnimationFrame);
-      this.cubeAnimationFrame = 0;
-    }
+    this.destroyObsidianCube();
   }
 
   get filteredProjects(): Project[] {
@@ -443,97 +372,6 @@ export class HomePage implements OnDestroy, OnInit {
 
   setProjectFilter(language: string): void {
     this.selectedFilter = language;
-  }
-
-  startCubeRotation(event: PointerEvent): void {
-    const stage = event.currentTarget as HTMLElement;
-    const startedOnFace =
-      event.target instanceof Element && Boolean(event.target.closest('.nav-facet'));
-
-    if (!startedOnFace) {
-      stage.setPointerCapture(event.pointerId);
-    }
-
-    this.isRotatingCube = true;
-    this.cubeDidDrag = false;
-    this.cubeStartX = event.clientX;
-    this.cubeStartY = event.clientY;
-    this.cubeStartRotateX = this.cubeTargetRotateX;
-    this.cubeStartRotateY = this.cubeTargetRotateY;
-    this.animateCubeRotation();
-  }
-
-  rotateCube(event: PointerEvent): void {
-    if (!this.isRotatingCube) {
-      return;
-    }
-
-    const deltaX = event.clientX - this.cubeStartX;
-    const deltaY = event.clientY - this.cubeStartY;
-
-    if (Math.hypot(deltaX, deltaY) > 7) {
-      this.cubeDidDrag = true;
-    }
-
-    this.cubeTargetRotateY = this.cubeStartRotateY + deltaX * 0.22;
-    this.cubeTargetRotateX = Math.max(
-      -42,
-      Math.min(42, this.cubeStartRotateX - deltaY * 0.18),
-    );
-  }
-
-  stopCubeRotation(event?: PointerEvent): void {
-    if (event?.currentTarget) {
-      const target = event.currentTarget as HTMLElement;
-      if (target.hasPointerCapture(event.pointerId)) {
-        target.releasePointerCapture(event.pointerId);
-      }
-    }
-
-    this.isRotatingCube = false;
-  }
-
-  handleCubeFaceClick(event: MouseEvent, face: CubeFace): void {
-    event.preventDefault();
-
-    if (this.cubeDidDrag) {
-      event.stopPropagation();
-      this.cubeDidDrag = false;
-      return;
-    }
-
-    if (face.route) {
-      void this.router.navigateByUrl(face.route);
-      return;
-    }
-
-    if (face.href) {
-      window.open(face.href, '_blank', 'noreferrer');
-    }
-  }
-
-  private animateCubeRotation(): void {
-    if (this.cubeAnimationFrame) {
-      return;
-    }
-
-    const step = () => {
-      const easing = this.isRotatingCube ? 0.18 : 0.1;
-
-      this.cubeRotateX += (this.cubeTargetRotateX - this.cubeRotateX) * easing;
-      this.cubeRotateY += (this.cubeTargetRotateY - this.cubeRotateY) * easing;
-
-      const deltaX = Math.abs(this.cubeTargetRotateX - this.cubeRotateX);
-      const deltaY = Math.abs(this.cubeTargetRotateY - this.cubeRotateY);
-
-      if (this.isRotatingCube || deltaX > 0.02 || deltaY > 0.02) {
-        this.cubeAnimationFrame = requestAnimationFrame(step);
-      } else {
-        this.cubeAnimationFrame = 0;
-      }
-    };
-
-    this.cubeAnimationFrame = requestAnimationFrame(step);
   }
 
   async sendContactMessage(): Promise<void> {
@@ -618,5 +456,31 @@ export class HomePage implements OnDestroy, OnInit {
       repository: repository.html_url,
       updatedAt: repository.updated_at,
     };
+  }
+
+  private initializeObsidianCube(): void {
+    if (this.obsidianCube || !this.obsidianCubeCanvas || this.currentScreen !== 'home') {
+      return;
+    }
+
+    this.ngZone.runOutsideAngular(() => {
+      this.obsidianCube = new ObsidianCubeRenderer(
+        this.obsidianCubeCanvas!.nativeElement,
+        PORTFOLIO_OBSIDIAN_FACES,
+        (face) => this.navigateFromCube(face),
+      );
+      this.obsidianCube.init();
+    });
+  }
+
+  private destroyObsidianCube(): void {
+    this.obsidianCube?.destroy();
+    this.obsidianCube = undefined;
+  }
+
+  private navigateFromCube(face: ObsidianCubeFace): void {
+    this.ngZone.run(() => {
+      void this.router.navigateByUrl(face.route);
+    });
   }
 }

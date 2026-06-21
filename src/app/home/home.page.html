@@ -119,59 +119,20 @@
                 <div class="artifact-frame__screen">
                   <span class="artifact-frame__status">Portafolio interactivo</span>
 
-                  <section class="cube-panel" aria-label="Cubo interactivo de navegacion del portafolio">
-                    <div
-                      class="cube-stage"
-                      [style.--cube-rotate-x]="cubeRotateX + 'deg'"
-                      [style.--cube-rotate-y]="cubeRotateY + 'deg'"
-                      (pointerdown)="startCubeRotation($event)"
-                      (pointermove)="rotateCube($event)"
-                      (pointerup)="stopCubeRotation()"
-                      (pointercancel)="stopCubeRotation($event)"
-                      (pointerleave)="stopCubeRotation()"
-                      (lostpointercapture)="stopCubeRotation()"
-                    >
-                      <div class="cube-aura"></div>
-                      <div class="cube-core">
-                        @for (face of cubeFaces; track face.title) {
-                          @if (face.route) {
-                            <a
-                              class="cube-facet nav-facet"
-                              [ngClass]="face.className"
-                              [href]="face.route"
-                              [attr.aria-label]="face.title"
-                              [attr.data-label]="face.title"
-                              (click)="handleCubeFaceClick($event, face)"
-                            >
-                              <span class="face-content">
-                                <ion-icon [name]="face.icon" aria-hidden="true"></ion-icon>
-                                <span>{{ face.title }}</span>
-                              </span>
-                            </a>
-                          } @else {
-                            <a
-                              class="cube-facet nav-facet"
-                              [ngClass]="face.className"
-                              [href]="face.href"
-                              target="_blank"
-                              rel="noreferrer"
-                              [attr.aria-label]="face.title"
-                              [attr.data-label]="face.title"
-                              (click)="handleCubeFaceClick($event, face)"
-                            >
-                              <span class="face-content">
-                                <ion-icon [name]="face.icon" aria-hidden="true"></ion-icon>
-                                <span>{{ face.title }}</span>
-                              </span>
-                            </a>
-                          }
-                        }
-                      </div>
-                      <div class="cube-base"></div>
+                  <section class="obsidian-cube-panel" aria-label="Cubo interactivo de navegacion del portafolio">
+                    <div class="obsidian-cube-stage">
+                      <canvas
+                        #obsidianCubeCanvas
+                        class="obsidian-cube-canvas"
+                        aria-label="Cubo 3D del portafolio"
+                        role="img"
+                      ></canvas>
+                      <span class="obsidian-cube-reticle obsidian-cube-reticle--top" aria-hidden="true"></span>
+                      <span class="obsidian-cube-reticle obsidian-cube-reticle--bottom" aria-hidden="true"></span>
                     </div>
                   </section>
 
-                  <p class="artifact-caption">Arrastra el cubo para explorar cada seccion.</p>
+                  <p class="artifact-caption">Backend / datos / automatizacion / producto</p>
                 </div>
               </div>
             </section>
