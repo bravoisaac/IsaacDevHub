@@ -189,22 +189,22 @@ export class HomePage implements AfterViewInit, OnDestroy, OnInit {
   readonly heroFeatures: HeroFeature[] = [
     {
       title: 'Backend verificable',
-      description: 'APIs, reglas de negocio y consultas MySQL pensadas para operar con trazabilidad.',
+      description: 'APIs, reglas de negocio y consultas MySQL con trazabilidad.',
       icon: 'server-outline',
     },
     {
       title: 'Automatizacion aplicada',
-      description: 'Flujos internos que reducen tareas manuales y conectan sistemas administrativos.',
+      description: 'Flujos internos para reducir tareas manuales y conectar procesos.',
       icon: 'analytics-outline',
     },
     {
       title: 'Producto responsive',
-      description: 'Interfaces Angular/Ionic claras, navegables y listas para procesos reales.',
+      description: 'Interfaces Angular/Ionic claras para web y mobile.',
       icon: 'layers-outline',
     },
     {
       title: 'Mejora medible',
-      description: 'Trabajo orientado a tiempos de respuesta, continuidad operativa e impacto visible.',
+      description: 'Optimizacion enfocada en tiempos de respuesta e impacto operativo.',
       icon: 'trophy-outline',
     },
   ];
@@ -213,22 +213,22 @@ export class HomePage implements AfterViewInit, OnDestroy, OnInit {
     {
       code: '01',
       title: 'Diagnosticar',
-      description: 'Entender objetivo, usuarios, datos disponibles y restricciones tecnicas.',
+      description: 'Definir objetivo, usuarios, datos y restricciones tecnicas.',
     },
     {
       code: '02',
       title: 'Prototipar',
-      description: 'Construir rapido una solucion funcional para validar el flujo principal.',
+      description: 'Validar rapido el flujo principal con una version funcional.',
     },
     {
       code: '03',
       title: 'Optimizar',
-      description: 'Mejorar consultas, integraciones, automatizaciones y experiencia de uso.',
+      description: 'Mejorar consultas, integraciones y experiencia de uso.',
     },
     {
       code: '04',
       title: 'Publicar',
-      description: 'Preparar despliegue, documentacion, soporte y seguimiento operativo.',
+      description: 'Preparar entrega, documentacion y seguimiento operativo.',
     },
   ];
 
