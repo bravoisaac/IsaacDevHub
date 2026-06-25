@@ -93,6 +93,18 @@ interface MethodStep {
   description: string;
 }
 
+interface SignalItem {
+  value: string;
+  label: string;
+}
+
+interface DetailItem {
+  title: string;
+  description: string;
+  icon?: string;
+  code?: string;
+}
+
 type PortfolioScreen =
   | 'home'
   | 'profile'
@@ -207,6 +219,76 @@ export class HomePage implements AfterViewInit, OnDestroy, OnInit {
       description: 'Optimizacion enfocada en tiempos de respuesta e impacto operativo.',
       icon: 'trophy-outline',
     },
+  ];
+
+  readonly heroSignals: SignalItem[] = [
+    { value: 'Disponible', label: 'presencial, hibrido o remoto' },
+    { value: 'Chile', label: 'colaboracion para equipos LATAM' },
+    { value: 'Producto', label: 'backend, datos y experiencia usable' },
+  ];
+
+  readonly deliveryHighlights: DetailItem[] = [
+    {
+      title: 'Codigo mantenible',
+      description: 'Componentes claros, nombres consistentes y flujo facil de extender.',
+      icon: 'code-slash-outline',
+    },
+    {
+      title: 'Datos confiables',
+      description: 'Consultas, validaciones y trazabilidad pensadas para operacion real.',
+      icon: 'server-outline',
+    },
+    {
+      title: 'Entrega usable',
+      description: 'Interfaces responsive, documentacion breve y foco en el proceso principal.',
+      icon: 'layers-outline',
+    },
+  ];
+
+  readonly professionalProof: SignalItem[] = [
+    { value: '20k+', label: 'registros optimizados en MySQL' },
+    { value: '30%', label: 'mejora aproximada en consultas' },
+    { value: '100+', label: 'usuarios atendidos en soporte TI' },
+    { value: 'AWS', label: 'formacion cloud practitioner' },
+  ];
+
+  readonly stackWorkflow: DetailItem[] = [
+    {
+      code: '01',
+      title: 'Modelar',
+      description: 'Entender datos, permisos, casos de uso y reglas de negocio.',
+    },
+    {
+      code: '02',
+      title: 'Construir',
+      description: 'APIs, UI responsive e integraciones con una base simple de mantener.',
+    },
+    {
+      code: '03',
+      title: 'Medir',
+      description: 'Revisar tiempos, errores, trazabilidad y mejoras de uso.',
+    },
+  ];
+
+  readonly projectQuality: DetailItem[] = [
+    {
+      title: 'Repositorios revisables',
+      description: 'Codigo publico para evaluar estructura, stack y evolucion de cada proyecto.',
+    },
+    {
+      title: 'Problemas concretos',
+      description: 'Casos orientados a automatizacion, datos, postulaciones y operacion interna.',
+    },
+    {
+      title: 'Base escalable',
+      description: 'Separacion entre frontend, backend, APIs y fuentes externas cuando aplica.',
+    },
+  ];
+
+  readonly contactHighlights: SignalItem[] = [
+    { value: '24-48h', label: 'respuesta estimada' },
+    { value: 'Remoto', label: 'o hibrido segun el proyecto' },
+    { value: 'CV', label: 'descargable desde el sitio' },
   ];
 
   readonly methodFlow: MethodStep[] = [

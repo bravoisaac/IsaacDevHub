@@ -6,6 +6,11 @@
         <small>Full Stack / Backend / Datos</small>
       </a>
 
+      <div class="topbar-status" aria-label="Estado profesional">
+        <span></span>
+        Disponible para oportunidades
+      </div>
+
       <div class="quick-actions" aria-label="Accesos rapidos">
         <a href="assets/CV_Isaac_Bravo_FullStack.pdf" target="_blank" rel="noreferrer">CV</a>
         <a href="https://github.com/bravoisaac" target="_blank" rel="noreferrer">GH</a>
@@ -78,6 +83,15 @@
                 con Python, JavaScript, Laravel, Angular y MySQL, enfocadas en datos,
                 automatizacion, trazabilidad e IA aplicada.
               </p>
+
+              <div class="hero-signal-strip" aria-label="Senales de disponibilidad">
+                @for (signal of heroSignals; track signal.value) {
+                  <span>
+                    <strong>{{ signal.value }}</strong>
+                    <small>{{ signal.label }}</small>
+                  </span>
+                }
+              </div>
 
               <div class="side-panels__features">
                 @for (feature of heroFeatures; track feature.title) {
@@ -155,6 +169,18 @@
                 }
               </div>
 
+              <div class="side-panels__delivery" aria-label="Criterios de entrega profesional">
+                @for (item of deliveryHighlights; track item.title) {
+                  <article>
+                    <ion-icon [name]="item.icon || 'briefcase-outline'" aria-hidden="true"></ion-icon>
+                    <div>
+                      <strong>{{ item.title }}</strong>
+                      <p>{{ item.description }}</p>
+                    </div>
+                  </article>
+                }
+              </div>
+
               <a class="side-panels__cta side-panels__cta--secondary" routerLink="/perfil">
                 Ver perfil
                 <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
@@ -174,6 +200,15 @@
               datos MySQL y automatizando procesos administrativos en entornos
               institucionales.
             </p>
+          </div>
+
+          <div class="proof-grid" aria-label="Evidencia profesional">
+            @for (proof of professionalProof; track proof.value) {
+              <article class="proof-card">
+                <strong>{{ proof.value }}</strong>
+                <span>{{ proof.label }}</span>
+              </article>
+            }
           </div>
 
           <div class="profile-grid">
@@ -273,6 +308,16 @@
               automatizar procesos, trabajar con datos y desplegar soluciones con
               base profesional.
             </p>
+          </div>
+
+          <div class="workflow-strip" aria-label="Forma de trabajo con el stack">
+            @for (item of stackWorkflow; track item.code) {
+              <article>
+                <span>{{ item.code }}</span>
+                <strong>{{ item.title }}</strong>
+                <p>{{ item.description }}</p>
+              </article>
+            }
           </div>
 
           <div class="stack-focus-grid">
@@ -389,6 +434,15 @@
             }
           </div>
 
+          <div class="project-quality-grid" aria-label="Senales de calidad de proyectos">
+            @for (item of projectQuality; track item.title) {
+              <article>
+                <strong>{{ item.title }}</strong>
+                <p>{{ item.description }}</p>
+              </article>
+            }
+          </div>
+
           <div class="project-filters" aria-label="Filtrar proyectos por lenguaje">
             @for (filter of projectFilters; track filter) {
               <button
@@ -458,6 +512,15 @@
               Estoy disponible para conversar sobre nuevos proyectos, colaboraciones
               o mejoras para aplicaciones web y moviles.
             </p>
+
+            <div class="contact-highlights" aria-label="Condiciones de contacto">
+              @for (item of contactHighlights; track item.value) {
+                <span>
+                  <strong>{{ item.value }}</strong>
+                  <small>{{ item.label }}</small>
+                </span>
+              }
+            </div>
           </div>
 
           <div class="contact-panel">
